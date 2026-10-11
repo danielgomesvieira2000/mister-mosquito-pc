@@ -1,0 +1,57 @@
+address,name,source
+0x00100A58,sceGsPutDrawEnv,diagnostic string
+0x00100BD8,sceGsSyncPath,status table
+0x00101248,sceGsExecLoadImage,status table
+0x001029C0,AddIntcHandler,kernel service 0x10
+0x001029D0,AddIntcHandler,kernel service 0x10
+0x001029E0,RemoveIntcHandler,kernel service 0x11
+0x001029F0,AddDmacHandler,kernel service 0x12
+0x00102A00,AddDmacHandler,kernel service 0x12
+0x00102A10,RemoveDmacHandler,kernel service 0x13
+0x00102A20,_EnableIntc,kernel service 0x14
+0x00102A30,_DisableIntc,kernel service 0x15
+0x00102A40,_EnableDmac,kernel service 0x16
+0x00102A50,_DisableDmac,kernel service 0x17
+0x00102AE0,CreateThread,kernel service 0x20
+0x00102AF0,DeleteThread,kernel service 0x21
+0x00102B00,StartThread,kernel service 0x22
+0x00102B20,ExitDeleteThread,kernel service 0x24
+0x00102B30,TerminateThread,kernel service 0x25
+0x00102B70,ChangeThreadPriority,kernel service 0x29
+0x00102B90,RotateThreadReadyQueue,kernel service 0x2B
+0x00102BD0,GetThreadId,kernel service 0x2F
+0x00102BE0,ReferThreadStatus,kernel service 0x30
+0x00102C00,SleepThread,kernel service 0x32
+0x00102C10,WakeupThread,kernel service 0x33
+0x00102C50,SuspendThread,kernel service 0x37
+0x00102C70,ResumeThread,kernel service 0x39
+0x00102CC0,EndOfHeap,kernel service 0x3E
+0x00102CE0,CreateSema,kernel service 0x40
+0x00102CF0,DeleteSema,kernel service 0x41
+0x00102D00,SignalSema,kernel service 0x42
+0x00102D20,WaitSema,kernel service 0x44
+0x00102D30,PollSema,kernel service 0x45
+0x00102D90,SetOsdConfigParam,kernel service 0x4B
+0x00102F60,FlushCache,kernel service 0x64
+0x00102FB0,RFU107,kernel service 0x6B
+0x00102FF0,RFU111,kernel service 0x6F
+0x00103000,GsGetIMR,kernel service 0x70
+0x00103020,GsPutIMR,kernel service 0x71
+0x00103050,SetVSyncFlag,kernel service 0x73
+0x00103060,SetSyscall,kernel service 0x74
+0x00103080,SifDmaStat,kernel service 0x76
+0x001030A0,SifSetDma,kernel service 0x77
+0x001030B0,iSifSetDma,kernel service -0x77
+0x001030C0,SifSetDChain,kernel service 0x78
+0x001030D0,iSifSetDChain,kernel service -0x78
+0x001030E0,SifSetReg,kernel service 0x79
+0x001030F0,SifGetReg,kernel service 0x7A
+0x00103110,Deci2Call,kernel service 0x7C
+0x00103928,SetSyscall,kernel service 0x74
+0x00103938,MachineType_or_rfu,kernel service 0x5A
+0x00103980,GetMemorySize_or_rfu,kernel service 0x5B
+0x00105BF8,sceSifBindRpc,SIF RPC call sites - passed 11 SDK server IDs (0x80000001, 0x80000003, 0x80000006...)
+0x00105DC8,sceSifCallRpc,status table
+0x0010AEC8,EnableIntr,status table
+0x00117D98,StringCopy,status table
+0x00117EB0,StringLength,status table

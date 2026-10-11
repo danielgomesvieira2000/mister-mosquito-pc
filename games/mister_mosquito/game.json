@@ -1,0 +1,13 @@
+{
+  "name": "Mister Mosquito (SLUS-20375)",
+  "title": "Mister Mosquito",
+  "version": "0.0.1-dev",
+  "iso": "../../Mister Mosquito (USA).cue",
+  "executable": "SLUS_203.75",
+  "vu_regions": [
+    [
+      "0x001C5E00",
+      "0x001CD6E0"
+    ]
+  ]
+}
