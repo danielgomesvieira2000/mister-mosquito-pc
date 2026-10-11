@@ -106,17 +106,20 @@ played with no workaround (the PS2HOST_STOP_TRACKS_ON_UNLOAD diagnostic is
 removed). Runs: boot and title re-recorded (the timing changed, intended;
 title now 3,000 frames), stage1 added (19,000 frames, into play).
 
+## 2026-10-11 afternoon - engine 0.4.0
+
+The candidate engine released as ps2-port-engine v0.4.0 (cd-images merged
+into master with 0.3.0's texture packs, pushed, tagged). Before the tag: every
+engine test passing (387 Python tests, host, GPU - a stale GPU FBMSK
+expectation corrected), Mister Mosquito's runs as recorded, Burnout 3
+playtested by the user and its seven runs re-recorded against the tag (all
+reach their documented places; the bilinear rounding changed most pictures).
+This repository's engine submodule is at v0.4.0.
+
 Next:
-1. Burnout 3 against the engine (needs the user: replacing burnout3-decomp's
-   untracked lift with the candidate one was refused when attempted
-   unattended). Two engine changes will move its pictures: sceGsSyncV now
-   waits a frame (called from nine places), and bilinear filtering now
-   truncates in sixteenths. Its runs need a look and, if right, re-recording.
-2. Done 2026-10-11 afternoon: stage 1's intro cutscene ghost (FINDINGS.md, "a
-   blur that must lose"); the engine's GS bilinear now truncates as the GS
-   does.
-3. A port capture at frame 13,601 held two game frames before one vertical
+1. A port capture at frame 13,601 held two game frames before one vertical
    blank: check the cutscene's pacing against PCSX2.
-4. The GPU renderer test "a 16-bit target's FBMSK in its own bits" fails, as
-   it did before today's changes (texture-packs merge or earlier).
-5. Gameplay: the mosquito's controls, the blood meter, sound in play.
+2. Gameplay: the mosquito's controls, the blood meter, sound in play.
+3. Burnout 3 crashed once at start on the candidate (an access violation in
+   the window's message handling, not seen again in seven starts and a
+   playtest); crash reports now give module+offset if it recurs.
