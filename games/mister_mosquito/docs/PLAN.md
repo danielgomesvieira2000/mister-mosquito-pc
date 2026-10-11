@@ -56,3 +56,33 @@ VERIFIED and MACHINE-CHECKED numbers.
   an intermittent stall remains where the EE sound thread's sequencer
   (F_001BEC18) loops on a track whose next event never comes due - sound
   trace: PS2HOST_SOUND_LOG=1 (port/sound_trace.cpp).
+
+## Night of 2026-10-11 - summary
+
+Reached: boot -> no-memory-card notice (or, with a card, straight on) ->
+3D title fly-through -> main menu -> stage select, pictures right on both
+renderers (text, textures, field-mode display), sound driver running, pad,
+memory card. Stage 1 does not start yet (the sequencer stall above).
+Recorded runs: boot (gpu, soft), title (gpu). VERIFIED 6.9%,
+MACHINE-CHECKED 37.6% of code bytes.
+
+Engine (branch cd-images, 17 commits, local only - not pushed, not tagged):
+CD images; the lift's jr dispatch (one switch per function; every
+instruction a target up to 3,000 instructions, else the knowable targets
+and all function starts); jump tables searched program-wide; CodeWarrior
+jump tables and large-frame prologues; SDK 2.3 services (IOP reboot image
+versions, libcdvd N-commands with a drive's timing, padman, LoadIopHeap,
+libsd's older callbacks, libmc's mcserv); guest coroutines; SMODE2 field
+mode; CSM2 and CT24 CLUTs; diagnostics (stuck runs, SIF/MC/pad logs).
+
+Burnout 3 against the engine (its lift redone with it, identical numbers):
+car_select gpu/soft, memcard_save gpu, race gpu, race_training gpu/soft as
+recorded; race soft differs on 2-3 frames that change from run to run (the
+v0.2.0 baseline differed on 1) - to be settled before a tag.
+
+Next:
+1. The stage-entry stall: the menu task's sound in the stage loader's
+   frame (FINDINGS.md, end) - compare the task order with PCSX2.
+2. Why the title takes no START under --virtual-time (scripted runs into
+   the menus need it).
+3. Then the stage itself: gameplay, the 3D, the mosquito's controls.
