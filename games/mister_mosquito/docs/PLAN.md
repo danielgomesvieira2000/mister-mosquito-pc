@@ -107,9 +107,16 @@ removed). Runs: boot and title re-recorded (the timing changed, intended;
 title now 3,000 frames), stage1 added (19,000 frames, into play).
 
 Next:
-1. Burnout 3 against the engine: it has the same sceGsSyncV, called from nine
-   places, which now waits a frame as on the console. Its runs may change.
-2. Stage 1's intro cutscene: a large blurred copy of the mother's face covers
-   the top of the picture (PCSX2: sharp, top centre). A render-to-texture or
-   blur effect; compare the software GS.
-3. Gameplay: the mosquito's controls, the blood meter, sound in play.
+1. Burnout 3 against the engine (needs the user: replacing burnout3-decomp's
+   untracked lift with the candidate one was refused when attempted
+   unattended). Two engine changes will move its pictures: sceGsSyncV now
+   waits a frame (called from nine places), and bilinear filtering now
+   truncates in sixteenths. Its runs need a look and, if right, re-recording.
+2. Done 2026-10-11 afternoon: stage 1's intro cutscene ghost (FINDINGS.md, "a
+   blur that must lose"); the engine's GS bilinear now truncates as the GS
+   does.
+3. A port capture at frame 13,601 held two game frames before one vertical
+   blank: check the cutscene's pacing against PCSX2.
+4. The GPU renderer test "a 16-bit target's FBMSK in its own bits" fails, as
+   it did before today's changes (texture-packs merge or earlier).
+5. Gameplay: the mosquito's controls, the blood meter, sound in play.
