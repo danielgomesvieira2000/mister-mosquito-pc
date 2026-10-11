@@ -307,3 +307,21 @@ commands, given the port's memory, kept the ghost. A 300-frame loop of the
 console's stream left the host with the ghost too. Fixed in the engine:
 bilinear weights in sixteenths with each step truncated, in the software GS
 and the GPU shader. The intro now matches PCSX2.
+
+## Streamed audio: narration and music (2026-10-11 evening)
+
+The narration and music (`ADPCM/**/*.INT`, SPU ADPCM, every block flagged
+2) are streamed by the EE's sound code. It reads 64 KB chunks into a 256 KB
+IOP ring at 0x1BA40 with sceCdReadIOPMem and queues driver op 0x43. SNDN2DRV
+copies 2 KB halves (left at 0x15140, right at 0x15940) and uploads them with
+sceSdVoiceTrans into an 8 KB SPU RAM ring at 0x5400-0x7400. Core 0 voice 0
+loops over that ring at pitch 0xEB3 (44.1 kHz), and the driver polls its NAX
+(sceSdGetAddr 0x2240) to refill the half just played. The driver's
+BlockTrans (PCM input) path, ops 0x46/0x47, is dead code: nothing in the EE
+calls it.
+
+The voice played (envelope 0x7FFF, NAX advancing) but was silent: the
+driver clears VMIXEL/VMIXER and never sets VMIXL/VMIXR, relying on
+sceSdInit leaving every voice mixed. The host had them at 0. Fixed in the
+engine (libsd's sceSdInit). The opening narration (N_OPN.INT, after START at
+the title) now plays at a normal level.
