@@ -182,3 +182,17 @@ bank moves; what decides whether it does here - thread interleaving around
 the stage loader, CD reads finishing at once instead of taking time, or a
 translation fault - is the next thing to find (watch track 0's flags with
 --watch-write 0x00665E40 across the stage select -> stage transition).
+
+Later the same morning, with CD reads taking a drive's time (engine
+579da46): every attempt stalls the same way (3 of 3), the bank's header
+always reloaded at 0x00BD0400. In the stalling frame (sound frame ~1356)
+the stage loader queues twenty `0x40` driver commands (voices off) and two
+`0x43` (stream) - and between them the menu task F_0017DA40 starts a new
+looping sound on track 0 (0x001C3560, flags 0x1C0C) on bank 1, which the
+loader then moves. So the menu task is still alive, and running after the
+loader's stop-all, in the frame the stage takes over. Next: when the menu
+task should end (who kills it - 0x0011AD74's callers around the stage
+select's START), compared with PCSX2 (task order and lifetimes in that
+frame); the coroutine scheduler (port/tasks.cpp) runs the tasks in the
+run list's order, as the original does, but a difference in when a task is
+created, killed or put to sleep would show exactly so.
