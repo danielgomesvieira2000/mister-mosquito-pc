@@ -148,10 +148,15 @@ polls getinfo now and then; without one it polls getinfo every frame.
 
 ## Where the run stands (2026-10-11 morning)
 
-- The title (task F_0019C790) takes START only while a counter in its
-  frame (`0x180($sp)`) is below 300 (0x001A26E4); in real time a press
-  every couple of seconds lands. Under `--virtual-time` the presses tried
-  so far missed it - the scripted runs for the menus are real-time for now.
+- The title (task F_0019C790, TCB 0x0066A620): after loading
+  `menu/ttitleus.bin` it waits for its TCB's byte +0x39, which the task
+  F_001A4600 sets (in real and virtual time alike), then loops yielding at
+  0x001A2F10 with a frame counter at `0x180($sp)`. Its own START test at
+  0x001A26FC needs `0x200($sp)` = 1, which stays 0 in both modes - so START
+  is taken elsewhere (candidates: 0x0013F574 in F_0013E5A0, 0x00151E28 in
+  F_001516F0). In real time presses a couple of seconds apart land; under
+  `--virtual-time` none has yet (PS2HOST_TITLE_LOG traces the title's
+  state) - the scripted runs into the menus are real-time for now.
 - Entering stage 1 (START at the stage select) stalls: the stage loader
   F_001516F0 waits for the sound driver (0x001C2690) for a bank upload,
   but the EE sound thread (0x00198560, the highest priority) loops in its

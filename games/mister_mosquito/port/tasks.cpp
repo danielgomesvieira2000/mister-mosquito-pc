@@ -175,7 +175,8 @@ void TitleLog(const lifted::Context& c) {
     static u32 count = 0;
     const u32 ra = u32(c.r[31]), sp = u32(c.r[29]);
     if (!on || ra < 0x0019C790u || ra >= 0x001A2F18u || count++ % 30) return;
-    std::fprintf(stderr, "[title] yield at 0x%08X: 110=%d 180=%d 200=%d 1e0=%d pad pressed %04X held %04X\n", ra,
+    std::fprintf(stderr, "[title] tcb 0x%08X yield at 0x%08X: 110=%d 180=%d 200=%d 1e0=%d pad pressed %04X held %04X\n",
+                 R32(kGlobals + 0x08), ra,
                  s32(R32(sp + 0x110)), s32(R32(sp + 0x180)), s32(R32(sp + 0x200)), s32(R32(sp + 0x1E0)),
                  R32(0x0031C1EC), R32(0x0031C1E8));
 }
