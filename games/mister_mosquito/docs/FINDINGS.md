@@ -98,3 +98,63 @@ simply went on and the scheduler never ran the others: the first task
 coroutine (engine `CreateCoroutine`/`SwitchCoroutine`): the scheduler
 switches into a task's coroutine where the game jumped into the task, and
 yield, sleep and kill switch back. Memory is kept as the game keeps it.
+
+## Sound
+
+- `SNDN2DRV.IRX` (RPC server "sndn", 0x736E646E) runs in the IOP
+  interpreter. Procedure 101 initialises (sceSdInit, the transfer callback
+  through libsd's older `sceSdSetTransCallback`), procedure 100 is called
+  once a frame by the EE's sound thread (0x00198560, woken from the
+  vertical-blank-end handler 0x00198520) with the commands queued since
+  (0x001BF0D0), and answers 512 bytes of status. The EE numbers its
+  commands (0x00666E48) and waits for the driver's count at status +0x1C0
+  (0x001C2690); a bank upload (`sceSdVoiceTrans`) only counts once the
+  transfer's callback has run - the host's libsd never called the older
+  callback, and the game waited forever at its first bank.
+- Banks: `SOUND/ENG/*.BD` loaded into the IOP heap with sceSifLoadIopHeap
+  (iopheap procedure 3, EE 0x00109D80), then uploaded to SPU2 RAM by the
+  driver. Music streams from `ADPCM/*.INT` through sceCdReadIOPMem
+  (N-command 13) into a 256 KB IOP buffer.
+
+## Controller
+
+libpad 2.3 / padman 4.x (EE 0x0010AF50-0x0010C100): engine `dbc.cpp`,
+padman. Two pad areas, ports 0 and 1 (0x0038DE40, 0x00391E40).
+
+## Graphics
+
+- Display: PMODE circuit 2, SMODE2 = 3 (interlaced, field mode), two
+  640x224 frame buffers (DISPFB2 FBP 0 / 0x46), DISPLAY2 DH 447 - a field
+  shows all 224 lines.
+- Text: `MENU/FONTDATA.BIN` holds the font as TIM2 images, a 32x32 4-bit
+  glyph each with a 16-entry CT16 CLUT (TIM2 CLUT type 0x81). The glyph is
+  uploaded to 0x1A40 per character; the CLUT once, as a 16x1 row at
+  0x1A60, read with CSM2 (TEX0 bit 55).
+- Most world textures are 8-bit with CT24 CLUTs (CPSM 1).
+
+## Getting around (scripted presses, virtual time)
+
+`--press cross@500-510` answers the no-memory-card notice (YES: no saves);
+START at the title (frame ~1500 under virtual time) opens the main menu
+(the mosquito and NEW GAME / ...), START again the stage select (STAGE 1,
+the Yamadas' room).
+
+## Memory card
+
+libmc 2.3 over mcserv (engine `mcserv.cpp`). With a card (`--memcard DIR`)
+the game skips the notice, scans `/BASLUS-20375KA1/BASLUS-20375KA1` to
+`...KA7` (getdir, then open read-write) for its seven save slots, and
+polls getinfo now and then; without one it polls getinfo every frame.
+
+## Where the run stands (2026-10-11 morning)
+
+- The title (task F_0019C790) takes START only while a counter in its
+  frame (`0x180($sp)`) is below 300 (0x001A26E4); in real time a press
+  every couple of seconds lands. Under `--virtual-time` the presses tried
+  so far missed it - the scripted runs for the menus are real-time for now.
+- Entering stage 1 (START at the stage select) stalls: the stage loader
+  F_001516F0 waits for the sound driver (0x001C2690) for a bank upload,
+  but the EE sound thread (0x00198560, the highest priority) loops in its
+  sequencer F_001BEC18 (at 0x001BECA8) and never sends its queue - 23
+  commands pending at 0x00666E80, request number 8. Next: why that loop
+  never ends (the sequence data it walks, 0x001C0318's events).

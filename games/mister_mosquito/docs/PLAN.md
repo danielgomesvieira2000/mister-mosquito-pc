@@ -27,3 +27,17 @@ VERIFIED and MACHINE-CHECKED numbers.
 
 - 2026-10-11: engine branch `cd-images` (55f88c5): raw CD + .cue images,
   sceCdRead data patterns, disc type PS2CD. Host tests and engine tests pass.
+- 2026-10-11 night (engine, all local on `cd-images`): lift dispatch to
+  jr targets (a 5.2 MB function -> 632 KB, 12 min -> 3 s at /O2);
+  CodeWarrior jump tables (71 -> 1,849); SIF reset/IOPRP version; libcdvd
+  N-commands (read, read-to-IOP, disk ready), sceCdGetError; padman;
+  sceSifLoadIopHeap; libsd's older callbacks; guest coroutines (the task
+  system); SMODE2 field mode; CSM2 CLUTs; CT24 CLUTs; a stuck-run
+  diagnostic in the host watchdog.
+- Reached: notice -> title fly-through -> main menu -> stage select, text
+  and textures right in both renderers; 34 VU1 programs compiled.
+- Open: the stage after START at the stage select (black - investigating);
+  memory cards (libmc over mcserv 0x80000400, protocol read but not
+  implemented: the game is played without saves); OP.PSS (the opening
+  movie, IPU); Burnout 3's runs against the candidate engine (re-lift in
+  progress) before any tag; pushing (the user's call).
