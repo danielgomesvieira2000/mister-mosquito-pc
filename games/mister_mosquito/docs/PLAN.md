@@ -41,3 +41,18 @@ VERIFIED and MACHINE-CHECKED numbers.
   implemented: the game is played without saves); OP.PSS (the opening
   movie, IPU); Burnout 3's runs against the candidate engine (re-lift in
   progress) before any tag; pushing (the user's call).
+- 2026-10-11 05:00: Burnout 3 against the candidate engine first failed
+  memcard_save (a jr target outside a run-time-translated function's
+  slice) and race (from frame 17,000: the narrowed jr dispatch missed a
+  table built at run time and ran a case as a separate function). Both
+  fixed in the engine: tables searched program-wide; every instruction a
+  dispatch target again except in functions over 3,000 instructions,
+  which also keep every function start inside them. Burnout 3 re-lifting
+  to confirm before any tag.
+- Analysis now knows CodeWarrior's large-frame prologue and accepts a
+  pointer target that opens a frame without a return: the stage's 24 KB
+  task 0x0015D920 is a function.
+- Stage 1: entered in real time once (stopped at 0x0015D920, now fixed);
+  an intermittent stall remains where the EE sound thread's sequencer
+  (F_001BEC18) loops on a track whose next event never comes due - sound
+  trace: PS2HOST_SOUND_LOG=1 (port/sound_trace.cpp).

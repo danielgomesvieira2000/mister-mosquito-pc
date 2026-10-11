@@ -27,6 +27,8 @@
  * the TCBs and globals - is kept exactly as the game's own code keeps it.
  */
 
+#include <cstdio>
+#include <cstdlib>
 #include <map>
 #include <vector>
 
@@ -166,8 +168,21 @@ u32 Running(const char* what) {
     return tcb;
 }
 
+// PS2HOST_TITLE_LOG=1: the title task's state at its yields (F_0019C790's
+// frame: +0x110, +0x180 its START window's counter, +0x200), every 30th.
+void TitleLog(const lifted::Context& c) {
+    static const bool on = std::getenv("PS2HOST_TITLE_LOG") != nullptr;
+    static u32 count = 0;
+    const u32 ra = u32(c.r[31]), sp = u32(c.r[29]);
+    if (!on || ra < 0x0019C790u || ra >= 0x001A2F18u || count++ % 30) return;
+    std::fprintf(stderr, "[title] yield at 0x%08X: 110=%d 180=%d 200=%d 1e0=%d pad pressed %04X held %04X\n", ra,
+                 s32(R32(sp + 0x110)), s32(R32(sp + 0x180)), s32(R32(sp + 0x200)), s32(R32(sp + 0x1E0)),
+                 R32(0x0031C1EC), R32(0x0031C1E8));
+}
+
 // 0x0011AF7C: give the processor back until the next frame.
 void Yield(lifted::Context& c) {
+    TitleLog(c);
     const u32 tcb = Running("yield");
     SaveTask(c, tcb);
     SwitchOut(c, tcb);

@@ -16,9 +16,11 @@
 #include "ps2host/run.h"
 
 void RegisterTaskOverrides();    // tasks.cpp
+void RegisterSoundTrace();       // sound_trace.cpp
 
 void RegisterGameOverrides() {
     RegisterTaskOverrides();
+    RegisterSoundTrace();
     // The game's own sound driver (server "sndn", 0x736E646E) runs in the IOP
     // interpreter on the host's libsd, as the console runs it.
     ps2host::iop::RunModule("SNDN2DRV.IRX");

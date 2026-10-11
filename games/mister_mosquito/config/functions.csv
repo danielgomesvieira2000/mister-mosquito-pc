@@ -588,6 +588,7 @@ address,name,status,source,notes
 0x001235E0,lifted::F_001235E0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
 0x001236E0,lifted::F_001236E0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: execution left the program at N"
 0x001238C0,lifted::F_001238C0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: execution left the program at N"
+0x00123AA0,lifted::F_00123AA0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: ExecutionLimit: exceeded N instructions; likely an infinite loop"
 0x00125D00,lifted::F_00125D00,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x00125EB0,lifted::F_00125EB0,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x00125FE0,lifted::F_00125FE0,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
@@ -698,6 +699,7 @@ address,name,status,source,notes
 0x00157FF0,lifted::F_00157FF0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: ExecutionLimit: exceeded N instructions; likely an infinite loop"
 0x00158220,lifted::F_00158220,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
 0x0015D5E0,lifted::F_0015D5E0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: ExecutionLimit: exceeded N instructions; likely an infinite loop"
+0x0015D920,lifted::F_0015D920,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: ExecutionLimit: exceeded N instructions; likely an infinite loop"
 0x00163820,lifted::F_00163820,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x00163A90,lifted::F_00163A90,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x00163C20,lifted::F_00163C20,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
@@ -712,7 +714,7 @@ address,name,status,source,notes
 0x00167DC0,lifted::F_00167DC0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: store of N byte(s) at unmapped N"
 0x00168380,lifted::F_00168380,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
 0x00168660,lifted::F_00168660,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
-0x00168870,lifted::F_00168870,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
+0x00168870,lifted::F_00168870,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: store of N byte(s) at unmapped N"
 0x00168D60,lifted::F_00168D60,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: store of N byte(s) at unmapped N"
 0x00169C80,lifted::F_00169C80,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x0016A1A0,generated::func_0016A1A0,verified,src/generated/accessors.cpp,symbolically derived; differential-tested over 8 argument sets
@@ -994,7 +996,7 @@ address,name,status,source,notes
 0x001B9FD0,generated::func_001B9FD0,verified,src/generated/accessors.cpp,symbolically derived; differential-tested over 8 argument sets
 0x001BA280,generated::func_001BA280,verified,src/generated/accessors.cpp,symbolically derived; differential-tested over 8 argument sets
 0x001BA430,generated::func_001BA430,verified,src/generated/accessors.cpp,symbolically derived; differential-tested over 8 argument sets
-0x001BAA00,lifted::F_001BAA00,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
+0x001BAA00,lifted::F_001BAA00,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: store of N byte(s) at unmapped N"
 0x001BAD70,lifted::F_001BAD70,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
 0x001BBA50,lifted::F_001BBA50,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
 0x001BC660,lifted::F_001BC660,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: load of N byte(s) at unmapped N"
@@ -1240,14 +1242,18 @@ address,name,status,source,notes
 0x001EA070,lifted::F_001EA070,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: store of N byte(s) at unmapped N"
 0x001FE9F0,lifted::F_001FE9F0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
 0x001FF4A8,lifted::F_001FF4A8,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (break) at N"
+0x001FFC60,lifted::F_001FFC60,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
 0x00200180,lifted::F_00200180,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x00200E50,lifted::F_00200E50,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
 0x00202A50,lifted::F_00202A50,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
 0x00203760,lifted::F_00203760,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
-0x00204000,lifted::F_00204000,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
+0x00203FA0,lifted::F_00203FA0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
 0x002047E0,lifted::F_002047E0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
 0x0020485C,lifted::F_0020485C,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
 0x00222330,lifted::F_00222330,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
+0x00222CA8,lifted::F_00222CA8,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
+0x00222CF8,lifted::F_00222CF8,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
+0x00222D68,lifted::F_00222D68,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x00222DA8,lifted::F_00222DA8,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x002ABB80,lifted::F_002ABB80,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x002AE190,lifted::F_002AE190,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
@@ -1270,6 +1276,8 @@ address,name,status,source,notes
 0x002CE4E0,lifted::F_002CE4E0,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
 0x002CED30,lifted::F_002CED30,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x002D1430,lifted::F_002D1430,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
+0x002D1640,lifted::F_002D1640,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: trap (tge) at N"
+0x002D16A0,lifted::F_002D16A0,lifted,src/lifted/,lifted instruction by instruction; registers and memory differential-tested against the original
 0x002D1E10,lifted::F_002D1E10,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: execution left the program at N"
 0x002D1E28,lifted::F_002D1E28,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: EmulationError: execution left the program at N"
 0x002D2080,lifted::F_002D2080,reconstructed,src/lifted/,"lifted; not verified: untestable: original, every memory profile: MemoryFault: store of N byte(s) at unmapped N"

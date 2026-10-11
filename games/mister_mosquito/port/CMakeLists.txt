@@ -24,4 +24,5 @@ ps2_add_port(mister_mosquito
     GENERATED ${PS2_GENERATED_DIR}
     TRANSLATED ${CMAKE_CURRENT_LIST_DIR}/../src/lifted
     SOURCES ${CMAKE_CURRENT_LIST_DIR}/overrides.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/tasks.cpp)
+            ${CMAKE_CURRENT_LIST_DIR}/tasks.cpp
+            ${CMAKE_CURRENT_LIST_DIR}/sound_trace.cpp)
