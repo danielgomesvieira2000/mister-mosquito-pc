@@ -400,6 +400,30 @@ The 2D reaches the GS by another way than the 3D: 3D meshes on PATH1 (VU1's
 XGKICK), every 2D sprite (text glyphs on texture 0x1A40, the menu's frames,
 boxes, the HUD) on PATH2 (VIF1 DIRECT), built by several EE functions (text
 0x0013CC40, frames 0x00192EE0, boxes 0x001918F0, packets queued with
-0x001BD610). In a wider picture the 2D is still drawn for 4:3 and stretched
-with it: next to keep its shape, anchored left, centre or right as in
-Burnout 3 (its HUD editor, F10).
+0x001BD610).
+
+Every 2D vertex is made by one routine, 0x00101E50 (vftoi4: a float vector
+to the GS's fixed point, written as PACKED XYZ2 into a packet), called only
+from eleven builders - 0x00190690, 0x00190EE0, 0x00191200, 0x00191480,
+0x001918F0 (a box), 0x00191B80, 0x00191E60, 0x00192C30, 0x00192D50,
+0x00192EE0 (a frame), 0x001932A0 - and four screen effects (0x00135490,
+0x00135B60, 0x00135F00, 0x00136350: the picture copied whole and into
+smaller pictures, the 3D's). A string is 0x0013CCC0 (called by 0x0013C9D0,
+0x0013CA90, 0x0013CB40, 0x0013CC00, 0x0013CC40), a builder call per glyph.
+Packets are built in the objects' own memory (double-buffered by field) and
+some are kept from frame to frame, so the 2D is placed on its way to the GS
+instead: the port tags each vertex as it is made with its piece (the
+outermost builder's or string's call: who called it, its extent) and the
+engine hands each VIF1 DIRECT block to the port as a copy (SetPath2Filter),
+where a tagged vertex still holding the x it was written with is moved in by
+its element's anchor (left, centre, right, stretch: settings
+"hud.<context>.<object>.<cell>", the F10 editor, as in Burnout 3). The
+picture is drawn a field at a time: 640 x 224, XYOFFSET y 1936 (0x7900 in
+GS units at the top), x 0x8000 its middle. A piece across the whole width
+(a backdrop) keeps the vertices at the edges.
+
+In a stage the HUD is 0x0012EE40 (a task's function, so context 0): the
+hearts top left, the stress orb and radar bottom left, the blood count bottom
+right - anchored there by default. The markers on the room's targets
+(0x00145C70, 0x00146A00) sit on the 3D, which the camera already made wider:
+stretched, not moved.

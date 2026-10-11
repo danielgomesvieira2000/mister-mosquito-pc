@@ -1,0 +1,1 @@
+--virtual-time --press cross@500-510 --press start@2800-2806 --press start@11000-11006 --press start@11600-11606 --until-frame 19500 --setting aspect=16:9

@@ -45,6 +45,8 @@ void F_00192EE0(lifted::Context& c);   // set a frame object up (a2 its alpha)
 void F_0013C660(lifted::Context& c);   // a string's x, centred at a1 (scale f12)
 void F_0013CC40(lifted::Context& c);   // draw a string at f12, f13 (scale f14, font a1)
 void F_001918F0(lifted::Context& c);   // place a box object
+void Copied2D(u32 to, u32 from, u32 bytes);   // widescreen.cpp: a copied packet tagged
+void Piece2D(void (*draw)(lifted::Context&), lifted::Context& c);   // widescreen.cpp: a builder's call
 void F_00191780(lifted::Context& c);   // draw a box object
 void F_0017B4C0(lifted::Context& c);   // a menu sound
 void F_001C4500(lifted::Context& c);   // the menu text section's string a0
@@ -238,6 +240,7 @@ void MainMenuBeforeYield(lifted::Context& c) {
                 W32(frame + half + 0x54, R32(file + half + 0x54) + 16 * down);
                 W32(frame + half + 0x74, R32(file + half + 0x74) + 16 * down);
             }
+            Copied2D(frame, file, 0x160);
             c.r[4] = frame;
             F_00192B40(c);
             const u32 text = TextAt(pool, 4 + k);
@@ -258,7 +261,7 @@ void MainMenuBeforeYield(lifted::Context& c) {
         c.r[9] = 0xC;
         c.r[10] = 0x44;
         c.r[11] = sp + 0x1F10;
-        F_001918F0(c);
+        Piece2D(F_001918F0, c);
         c.r[4] = sp + 0xED0;
         g.own_highlight = true;
         F_00191780(c);
@@ -366,7 +369,7 @@ void SetUpFrame(lifted::Context& c) {
         const u32 row = (u32(c.r[4]) - list) / 0x160u;
         if (row == 0 || row == 3) c.f[12] = FloatBits(1000.0f);
     }
-    F_00192EE0(c);
+    Piece2D(F_00192EE0, c);
 }
 
 // 0x0013CC40, a string drawn. In the PC screens, the game's four rows say

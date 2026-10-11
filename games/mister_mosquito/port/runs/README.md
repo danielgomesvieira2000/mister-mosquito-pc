@@ -22,6 +22,7 @@ and say here what each reaches and at which frames:
 | `stage1.args` | no card: the notice answered, START at the title (2,800), the fly-through to dusk and the menu (~10,400), STAGE (11,000), START at the stage select (11,600), stage 1's intro cutscene, the loading, Rena's cutscene, "STAGE 1", START! and play (~18,500) | 19,000 |
 | `menu.args` | no card: the main menu with the port's rows - the cursor on PC SETTINGS (frame 10,800), then EXIT GAME (11,000), the help line following | 11,000 |
 | `pc_menu.args` | no card: PC SETTINGS opened from the main menu - its six rows, the cursor on ASPECT (frame 11,000) - then back, and EXIT GAME's question, NO chosen (11,200) | 11,200 |
+| `wide.args` | `stage1.args` in a 16:9 picture (`--setting aspect=16:9`): the 3D wider, the menus' and the stage's 2D kept in shape, the stage's HUD at the corners | 19,500 |
 
 `python engine/tools/regress_all.py` runs every one of them (and every other
 game's, given their repositories) - before an engine version is tagged.

@@ -39,6 +39,12 @@ aspect ratio, fullscreen, v-sync and frame pacing. Up/Down choose, Left/Right
 or Cross change, Triangle goes back; they are saved for the next time.
 EXIT GAME in the main menu asks, then quits.
 
+ASPECT 16:9 (or FILL): the 3D is wider - more of the room at the sides -
+and the HUD keeps its shape, at the screen's corners. F10 opens the HUD
+editor: Page Up / Page Down choose an element on screen (it blinks), Home
+anchors it left, Insert in the middle, End right, Delete stretches it across
+the screen as the game drew it. F10 again closes it; anchors are saved.
+
 
 Controls
 --------
