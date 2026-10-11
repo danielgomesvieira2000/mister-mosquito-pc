@@ -325,3 +325,16 @@ driver clears VMIXEL/VMIXER and never sets VMIXL/VMIXR, relying on
 sceSdInit leaving every voice mixed. The host had them at 0. Fixed in the
 engine (libsd's sceSdInit). The opening narration (N_OPN.INT, after START at
 the title) now plays at a normal level.
+
+## Interlaced shake in the menus (2026-10-11 evening)
+
+Field mode (SMODE2 INT and FFMD) shows one 224-line field at a time. The
+game draws odd fields half a pixel lower (XYOFFSET Y +8 sixteenths,
+sceGsSetHalfOffset); a television scans that field a line lower and the two
+meet. Progressive, consecutive frames moved by exactly 0.5 lines, the shake in
+the menus and loading screens. A shift at presentation can't undo it exactly:
+the window's scale makes half a line a fraction of a pixel (1.6 px in a
+1280x896 window; the blit moves whole pixels). The engine now drops the half
+pixel when drawing in field mode: 0.0 lines frame to frame, rendered and in
+the window. The runs were re-recorded (title, stage1: the odd fields' frames
+moved).
