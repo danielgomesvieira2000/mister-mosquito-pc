@@ -1,1 +1,1 @@
---virtual-time --memcard {memcard} --until-frame 1200
+--virtual-time --memcard {memcard} --until-frame 3000

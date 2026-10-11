@@ -21,6 +21,9 @@ void RegisterSoundTrace();       // sound_trace.cpp
 void RegisterGameOverrides() {
     RegisterTaskOverrides();
     RegisterSoundTrace();
+    // sceGsSyncV's poll of INTC_STAT for the vertical blank (0x00103160), the
+    // main loop's once a frame: waited for asleep, not spun.
+    ps2host::AddIdleLoop(0x00103170u);
     // The game's own sound driver (server "sndn", 0x736E646E) runs in the IOP
     // interpreter on the host's libsd, as the console runs it.
     ps2host::iop::RunModule("SNDN2DRV.IRX");

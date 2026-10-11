@@ -91,3 +91,25 @@ Next:
 2. Why the title takes no START under --virtual-time (scripted runs into
    the menus need it).
 3. Then the stage itself: gameplay, the 3D, the mosquito's controls.
+
+## 2026-10-11 midday - the stall's cause, and stage 1
+
+PCSX2 (PINE socket for EE RAM, keystrokes for the pad) showed the stage's
+banks reloaded only after its intro cutscene, the START effect long over.
+The port had no fade and no intro because its main loop never waited for the
+vertical blank: the host had no INTC_STAT, so sceGsSyncV's poll read back its
+own write. The main loop ran five times a frame. Engine: INTC_STAT as a
+register (vertical blanks and RaiseIntc set it; writing 1 clears it). Port:
+the poll is an idle loop. Now the logos and warnings show, PLAYTIME keeps
+time, the title takes START under --virtual-time, and stage 1 is entered and
+played with no workaround (the PS2HOST_STOP_TRACKS_ON_UNLOAD diagnostic is
+removed). Runs: boot and title re-recorded (the timing changed, intended;
+title now 3,000 frames), stage1 added (19,000 frames, into play).
+
+Next:
+1. Burnout 3 against the engine: it has the same sceGsSyncV, called from nine
+   places, which now waits a frame as on the console. Its runs may change.
+2. Stage 1's intro cutscene: a large blurred copy of the mother's face covers
+   the top of the picture (PCSX2: sharp, top centre). A render-to-texture or
+   blur effect; compare the software GS.
+3. Gameplay: the mosquito's controls, the blood meter, sound in play.

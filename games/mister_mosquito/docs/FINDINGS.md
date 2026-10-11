@@ -246,3 +246,43 @@ lands at 0x00BCF800 again (the loader's allocations before it would then total
 at most 0x2C0 bytes, against 0xC00 here). Next: in PCSX2, break on the
 SYSTEM01.HD read at stage entry (LSN 284402) and compare its buffer address
 and track 0's flags (0x00665E40) with these.
+
+### The cause: the main loop never waited for the vertical blank (2026-10-11 midday)
+
+PCSX2 (2.6.3, the PINE socket reading EE RAM while keystrokes drove the pad)
+at the same moments:
+
+- START at the stage select: track 0's confirm effect (0x1C0C, then 0x44 the
+  next sequencer frame) ends on its own about 1.5 s later. The heap is reset
+  about 25 frames after the press (0x0188FF60 -> 0x00BD0140). The stage's
+  intro cutscene (the Yamadas' faces) then loads and plays. SYSTEM01.HD is
+  read again to 0x00BD0400 (bank table 0x006647CC) only when the intro is over,
+  long after the effect has stopped. Until then the bank entry still points at
+  the zeroed 0x00BCF800, which harms nothing because no track plays from it.
+- In the port the same reload came in the same frame as the press. There was
+  no fade and no intro: the START, still held, also skipped the intro.
+
+Why: the main loop (F_00168D60) paces itself with libgraph's sceGsSyncV
+(0x00100B40 -> 0x00103160). That routine writes 4 to INTC_STAT (0x1000F000)
+to clear VBLANK_START, then polls the register until bit 2 is set again. The
+host had no INTC_STAT, so the register was plain memory: the poll read back
+the 4 just written and never waited. The main loop ran about five times per
+displayed frame (its counter 0x0038B958 and the frame count 0x002D2538:
+7,653 by frame 1,500; PCSX2 advances both 60 per second). Everything counted
+in main-loop passes ran five times too fast: PLAYTIME, fades, the logos and
+warning screens (Fresh Games, ZOOM, "explicit itchiness", the insecticide
+CAUTION, all skipped before) and the stage select's hand-over.
+
+Fixed in the engine: INTC_STAT is now a register. A frame's vertical blank sets
+bits 2 and 3, RaiseIntc sets its cause, and writing 1 clears a bit. The port
+names the poll loop (0x00103170) an idle loop, so the wait sleeps. Now: 59 fps
+in real time, the intro screens shown, PLAYTIME at one second per second, the
+title taking START under --virtual-time, and stage 1 entered through its
+intro cutscene with no stall and no workaround (the PS2HOST_STOP_TRACKS_ON_UNLOAD
+diagnostic is removed). Past it: Rena's cutscene, "STAGE 1 - Suck Rena's
+blood", START!, and play with the HUD (frame ~18,500 under virtual time).
+
+The title, for scripted runs: a single START (frame 2800 under virtual time)
+lets the fly-through run on to dusk, the mosquito flies in, and the menu
+opens on its own about two minutes later (frame ~10,400; on PCSX2 too). START
+at 11,000 selects STAGE, START at 11,600 the stage.

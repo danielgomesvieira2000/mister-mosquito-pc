@@ -17,7 +17,6 @@
 void F_001C2690(lifted::Context& c);
 void F_001BF0D0(lifted::Context& c);
 void F_001BEC18(lifted::Context& c);
-void F_001C2880(lifted::Context& c);
 
 namespace {
 
@@ -50,29 +49,9 @@ void Frame(lifted::Context& c) {
                  R32(kState + 0x48));
 }
 
-// PS2HOST_STOP_TRACKS_ON_UNLOAD=1, a diagnostic and not a fix: unloading a
-// bank (0x001C2880) also stops the sequencer's tracks that play from it, so
-// the stage-entry stall (FINDINGS.md) is stepped past to see what follows.
-void UnloadBank(lifted::Context& c) {
-    const u32 bank = u32(c.r[4]);
-    std::fprintf(stderr, "[snd] unload bank %u\n", bank);
-    ps2host::Memory& m = ps2host::GuestMemory();
-    for (u32 t = 0; t < 48; ++t) {
-        const u32 track = 0x00665E40u + 0x54u * t;
-        if ((m.Read(track, 4) & 0xF) != 0 && m.Read(track + 0x18, 2) == bank) {
-            std::fprintf(stderr, "[snd] bank %u unloaded: track %u stopped (flags 0x%X)\n", bank, t,
-                         u32(m.Read(track, 4)));
-            for (u32 i = 0; i < 0x54; i += 4) m.Write(track + i, 0, 4);
-        }
-    }
-    F_001C2880(c);
-}
-
 }  // namespace
 
 void RegisterSoundTrace() {
-    if (std::getenv("PS2HOST_STOP_TRACKS_ON_UNLOAD"))
-        ps2host::Override(0x001C2880u, UnloadBank, "bank unload stops its tracks (diagnostic)");
     if (!std::getenv("PS2HOST_SOUND_LOG")) return;
     ps2host::Override(0x001C2690u, Wait, "sound wait (traced)");
     ps2host::Override(0x001BF0D0u, Enqueue, "sound queue (traced)");
