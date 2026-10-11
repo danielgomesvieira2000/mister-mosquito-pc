@@ -62,7 +62,9 @@ VERIFIED and MACHINE-CHECKED numbers.
 Reached: boot -> no-memory-card notice (or, with a card, straight on) ->
 3D title fly-through -> main menu -> stage select, pictures right on both
 renderers (text, textures, field-mode display), sound driver running, pad,
-memory card. Stage 1 does not start yet (the sequencer stall above).
+memory card. Stage 1 stalls on entry (the sequencer, FINDINGS.md); with
+the opt-in PS2HOST_STOP_TRACKS_ON_UNLOAD=1 it loads and plays (bedroom,
+mosquito, HUD).
 Recorded runs: boot (gpu, soft), title (gpu). VERIFIED 6.9%,
 MACHINE-CHECKED 37.6% of code bytes.
 
@@ -77,12 +79,15 @@ mode; CSM2 and CT24 CLUTs; diagnostics (stuck runs, SIF/MC/pad logs).
 
 Burnout 3 against the engine (its lift redone with it, identical numbers):
 car_select gpu/soft, memcard_save gpu, race gpu, race_training gpu/soft as
-recorded; race soft differs on 2-3 frames that change from run to run (the
-v0.2.0 baseline differed on 1) - to be settled before a tag.
+recorded; race soft differs on 2-3 frames that change from run to run - and
+so does the v0.2.0 baseline (1 frame, then 2: 17800, 19000). Only frame 9000,
+in one candidate run, was not seen at the baseline.
 
 Next:
-1. The stage-entry stall: the menu task's sound in the stage loader's
-   frame (FINDINGS.md, end) - compare the task order with PCSX2.
+1. The stage-entry stall, for real: in PCSX2, at stage entry, where
+   SYSTEM01.HD lands and whether track 0 (0x00665E40) still plays
+   (FINDINGS.md, end). Then replace the opt-in workaround with what the
+   console does.
 2. Why the title takes no START under --virtual-time (scripted runs into
    the menus need it).
 3. Then the stage itself: gameplay, the 3D, the mosquito's controls.

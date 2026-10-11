@@ -229,8 +229,16 @@ stall (--dump-ram):
 
 Tried and ruled out: a distance-dependent seek time (30 ms near, 100 ms far)
 for libcdvd reads. Even with several frames between unload and reload, the
-sequencer only skips the track then, so the stall stays (the change was
-reverted).
+sequencer only skips the track then, so the stall stays (checked with a
+rebuilt port, 1 of 1; the change was reverted).
+
+Past the stall: with PS2HOST_STOP_TRACKS_ON_UNLOAD=1 (port/sound_trace.cpp,
+a diagnostic, off by default) unloading a bank also stops the tracks that
+play from it. Stage 1 then loads and plays (real time, --gpu, START every
+150 frames): the bedroom, the player's mosquito, the HUD (hearts, gauge,
+radar), sound requests going on (sound frame 8000+). The stall is the one
+blocker on the way into the game. The workaround is not the console's
+behaviour, so it stays opt-in until PCSX2 shows what really happens.
 
 Open: on the console either the track is not playing at this point (the START
 effect ends, or is never started, before the heap reset), or SYSTEM01.HD
