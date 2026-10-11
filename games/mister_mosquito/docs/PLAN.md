@@ -66,7 +66,7 @@ memory card. Stage 1 does not start yet (the sequencer stall above).
 Recorded runs: boot (gpu, soft), title (gpu). VERIFIED 6.9%,
 MACHINE-CHECKED 37.6% of code bytes.
 
-Engine (branch cd-images, 17 commits, local only - not pushed, not tagged):
+Engine (branch cd-images, 15 commits, local only - not pushed, not tagged):
 CD images; the lift's jr dispatch (one switch per function; every
 instruction a target up to 3,000 instructions, else the knowable targets
 and all function starts); jump tables searched program-wide; CodeWarrior

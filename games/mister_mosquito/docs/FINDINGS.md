@@ -201,3 +201,40 @@ select's START), compared with PCSX2 (task order and lifetimes in that
 frame); the coroutine scheduler (port/tasks.cpp) runs the tasks in the
 run list's order, as the original does, but a difference in when a task is
 created, killed or put to sleep would show exactly so.
+
+### What starts the track, and what clears its data (2026-10-11 08:00-09:00)
+
+With PS2HOST_TASK_LOG (port/tasks.cpp), --watch-write and a RAM dump of the
+stall (--dump-ram):
+
+- Track 0 is started by the sound-effect task F_0017DA40 (TCB 0x00669BD0,
+  task table 0x002D2198; it loads SOUND/<lang>/MML.BIN, then loops F_0017D010
+  and a yield forever). It is never killed: it is the game's MML player, and
+  the 0x1C0C sound is the stage select's START "confirm" effect. It starts in
+  the same frame as the kill-others (0x001938C4, run by TCB 0x00669DE0) that
+  ends the stage select and starts the loader (TCB 0x00669FF0 at 0x001516F0).
+- In that frame the main thread (0x001429F0) resets the heap cursor
+  (gp-0x7B94 = 0x002D23DC, a bump allocator; F_001994D0 aligns it) to
+  0x00BCF540 and clears the memory after it (F_00116100). That zeroes the old
+  SYSTEM01.HD copy at 0x00BCF800 that track 0 reads through its absolute data
+  pointer (+8 = 0x00BCF9AE).
+- The loader then allocates 0x658, 0x420 and 6 x 0x40 bytes, aligns to 0x400,
+  and reads SYSTEM01.HD to 0x00BD0400. Unloading the bank (F_001C2880, from
+  F_00199290) stops the *voices* that use bank 1 (handle table 0x00664DC0) but
+  not the sequencer's *tracks* (0x00665E40).
+- The sequencer (F_001BEC18 -> F_001C0318) checks a track's bank (entry
+  non-zero, "SShd" at +0xC). With the bank missing it skips the track for that
+  frame. It does not stop it. Once the bank is back, the zero bytes are read
+  as a running status that never advances, which is the spin.
+
+Tried and ruled out: a distance-dependent seek time (30 ms near, 100 ms far)
+for libcdvd reads. Even with several frames between unload and reload, the
+sequencer only skips the track then, so the stall stays (the change was
+reverted).
+
+Open: on the console either the track is not playing at this point (the START
+effect ends, or is never started, before the heap reset), or SYSTEM01.HD
+lands at 0x00BCF800 again (the loader's allocations before it would then total
+at most 0x2C0 bytes, against 0xC00 here). Next: in PCSX2, break on the
+SYSTEM01.HD read at stage entry (LSN 284402) and compare its buffer address
+and track 0's flags (0x00665E40) with these.

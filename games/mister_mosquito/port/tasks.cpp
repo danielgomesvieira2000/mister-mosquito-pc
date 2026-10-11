@@ -110,6 +110,9 @@ void Resume(lifted::Context& c, u32 tcb) {
     c.r[3] = Sx(kGlobals);
     Task& task = g_tasks[tcb];
     if (!task.co || ps2host::CoroutineFinished(task.co) || task.pc != pc || task.sp != sp) {
+        if (std::getenv("PS2HOST_TASK_LOG"))
+            std::fprintf(stderr, "[task] TCB 0x%08X starts at 0x%08X (sp 0x%08X)%s\n", tcb, pc, sp,
+                         task.co ? " - a new start for a task that was suspended" : "");
         if (task.co) g_dropped.push_back(task.co);
         task.co = ps2host::CreateCoroutine([&c, pc, tcb] {
             ps2host::Dispatch(c, pc);
@@ -203,6 +206,9 @@ void Sleep(lifted::Context& c) {
 void Kill(lifted::Context& c) {
     const u32 tcb = u32(c.r[4]);
     const bool self = ps2host::CurrentCoroutine() && tcb == R32(kGlobals + 0x08);
+    if (std::getenv("PS2HOST_TASK_LOG"))
+        std::fprintf(stderr, "[task] TCB 0x%08X killed%s, from 0x%08X (running: TCB 0x%08X)\n", tcb,
+                     self ? " (itself)" : "", u32(c.r[31]), R32(kGlobals + 0x08));
     F_0011AD74(c);
     if (!self) {
         Drop(tcb);
