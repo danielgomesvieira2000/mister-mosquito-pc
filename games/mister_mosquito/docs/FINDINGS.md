@@ -375,5 +375,13 @@ highlight is moved to the port's row. When the menu resumes, the port takes
 the cursor's Up, Down, Cross and START before the game sees them. The PLAYTIME
 line is drawn 4 lines lower on the main menu, clear of the sixth row. Their
 strings and frames sit in an unused language's block of the text file. PC
-SETTINGS opens the engine's PC settings panel; EXIT GAME ends the run as
-closing the window does. Recorded as the `menu` run.
+SETTINGS turns the main menu into the PC settings screen: the six rows show
+the engine's settings (`PcSettings`: RESOLUTION, ASPECT, FULLSCREEN, V-SYNC,
+PACING) and BACK, Left/Right or Cross changes the row's setting, and the help
+line says what it is. The game's four rows show the port's text (0x0013CC40
+caught at their four call sites, scale 0.45). EXIT GAME asks first, as the
+game's own questions do: YES and NO (the text section's 230 and 231) in the
+middle rows, the others' frames set up off the screen (0x00192EE0 from
+0x001788C0 gets x 1000), the question on the help line, NO chosen at first.
+YES ends the run as closing the window does. Recorded as the `menu` and
+`pc_menu` runs.

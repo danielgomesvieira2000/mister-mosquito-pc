@@ -34,11 +34,10 @@ Getting started
    checks that it is the right disc.
 
 Alt+Enter switches between a window and fullscreen.
-PC SETTINGS in the main menu (or F1, or L3 + R3 on a controller, at any
-time) opens the PC settings: the resolution the game is drawn at, the aspect
-ratio, fullscreen, v-sync, frame pacing and the texture pack. Up/Down choose,
-Left/Right change, F1 or Esc closes; they are saved for the next time.
-EXIT GAME in the main menu quits.
+PC SETTINGS in the main menu: the resolution the game is drawn at, the
+aspect ratio, fullscreen, v-sync and frame pacing. Up/Down choose, Left/Right
+or Cross change, Triangle goes back; they are saved for the next time.
+EXIT GAME in the main menu asks, then quits.
 
 
 Controls

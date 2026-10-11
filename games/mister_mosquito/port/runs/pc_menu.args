@@ -1,0 +1,1 @@
+--virtual-time --press cross@500-510 --press start@2800-2806 --press down@10560-10565 --press down@10620-10625 --press down@10680-10685 --press down@10740-10745 --press cross@10800-10805 --press down@10860-10865 --press triangle@11050-11055 --press down@11100-11105 --press cross@11140-11145 --until-frame 11200
