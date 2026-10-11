@@ -286,3 +286,24 @@ The title, for scripted runs: a single START (frame 2800 under virtual time)
 lets the fly-through run on to dusk, the mosquito flies in, and the menu
 opens on its own about two minutes later (frame ~10,400; on PCSX2 too). START
 at 11,000 selects STAGE, START at 11,600 the stage.
+
+## Stage 1's intro: a blur that must lose (2026-10-11 afternoon)
+
+The intro cutscene draws each frame, copies it at half size into a 320x112
+buffer (FBP 0x14C, read as TBP 0x2980), and blends the copy back twice: once
+depth-tested at alpha 0x60 (a depth-of-field blur of the background), once
+untested at 0x80 from the *previous* frame (a motion blur). Both blends are
+weighted by the alpha in the frame buffer, and they write that alpha back, so
+the frame's alpha feeds itself. Loading leaves both buffers at alpha 0x80.
+On the console the old picture fades from the edges over a few seconds,
+because each bilinear pass truncates. In the port it held for good: a huge
+blurred copy of the mother's face from the cutscene's first frames.
+
+How it was found: PCSX2 GS dumps taken with its software renderer (the
+hardware ones leave stale frame buffers in the dump), replayed on the host
+(--gs-replay); the port's own stream captured with PS2HOST_CAPTURE_FRAME.
+The port's commands, given the console's GS memory, drew right. The console's
+commands, given the port's memory, kept the ghost. A 300-frame loop of the
+console's stream left the host with the ghost too. Fixed in the engine:
+bilinear weights in sixteenths with each step truncated, in the software GS
+and the GPU shader. The intro now matches PCSX2.

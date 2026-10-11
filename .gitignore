@@ -30,3 +30,6 @@ venv/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Frame captures (F12, PS2HOST_CAPTURE_FRAME): the game's pictures and GS memory.
+captures/
