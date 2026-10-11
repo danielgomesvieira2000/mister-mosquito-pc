@@ -20,6 +20,7 @@ and say here what each reaches and at which frames:
 | `boot.args` | no memory card: the boot (IOP reboot, sound driver, banks), the no-memory-card notice (its CSM2 font) | 600 |
 | `title.args` | an empty card (`{memcard}`): the card scan, the logos and warning screens, the title's 3D fly-through (CT24-CLUT textures, field-mode display) with "Press the START button" | 3,000 |
 | `stage1.args` | no card: the notice answered, START at the title (2,800), the fly-through to dusk and the menu (~10,400), STAGE (11,000), START at the stage select (11,600), stage 1's intro cutscene, the loading, Rena's cutscene, "STAGE 1", START! and play (~18,500) | 19,000 |
+| `menu.args` | no card: the main menu with the port's rows - the cursor on PC SETTINGS (frame 10,800), then EXIT GAME (11,000), the help line following | 11,000 |
 
 `python engine/tools/regress_all.py` runs every one of them (and every other
 game's, given their repositories) - before an engine version is tagged.

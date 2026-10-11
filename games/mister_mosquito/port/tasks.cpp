@@ -38,6 +38,9 @@
 
 void F_0011AB9C(lifted::Context& c);   // the scheduler
 void F_0011AD74(lifted::Context& c);   // kill a task
+void MainMenuBeforeYield(lifted::Context& c);   // main_menu.cpp
+void MainMenuAfterYield(lifted::Context& c);
+bool IsMainMenuYield(const lifted::Context& c);
 
 namespace {
 
@@ -184,12 +187,16 @@ void TitleLog(const lifted::Context& c) {
                  R32(0x0031C1EC), R32(0x0031C1E8));
 }
 
-// 0x0011AF7C: give the processor back until the next frame.
+// 0x0011AF7C: give the processor back until the next frame. The main menu's
+// yield is where the port's own menu rows are drawn and read (main_menu.cpp).
 void Yield(lifted::Context& c) {
     TitleLog(c);
     const u32 tcb = Running("yield");
+    const bool menu = IsMainMenuYield(c);
+    if (menu) MainMenuBeforeYield(c);
     SaveTask(c, tcb);
     SwitchOut(c, tcb);
+    if (menu) MainMenuAfterYield(c);
 }
 
 // 0x0011AE98: sleep $a0 frames.

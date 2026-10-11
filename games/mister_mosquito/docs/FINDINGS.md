@@ -338,3 +338,42 @@ the window's scale makes half a line a fraction of a pixel (1.6 px in a
 pixel when drawing in field mode: 0.0 lines frame to frame, rendered and in
 the window. The runs were re-recorded (title, stage1: the odd fields' frames
 moved).
+
+## The main menu (2026-10-11 night)
+
+The menu is the task F_0016D550 (24 KB, one state machine). Its frame
+(`$sp` 0x00706490 at the main menu):
+
+- `$s6` the screen: 0 the main menu, 10 the stage select, 20 COLOR, 30
+  RECORD, 40 FILE (choosing row n sets `(n + 1) * 10`), 0x32 and 0x3C
+  others. `$s4` the cursor. `$s7` the help line's string, `$sp+0x110` its
+  second line.
+- Four rows on every screen. Their text is in 64-byte strings at
+  `$sp+0x170`, `+0x180`, `+0x190`, `+0x1A0`, filled with 0x00199F40 (a string
+  copy) from the menu text section (`0x001C4500(i)`: STAGE 216, COLOR 217,
+  RECORD 218, FILE 219; the helps from 0 in blocks of five), centred with
+  0x0013C660 on x 0x21D at scale 0.55 and drawn with 0x0013CC40 (font
+  0x0031BC30) four lines below the frame's top. The frames are 0x160-byte
+  GS packets (two halves, a field each: y at +0x98, the sprite's Y at +0x54
+  and +0x74), a list at `$sp+0x5F0`, drawn with 0x00192B40, at y 61, 80, 99,
+  118. The highlight is the box at `$sp+0xED0`, placed with 0x001918F0 at
+  x `$sp+0x2080`, y `$sp+0x2090[$s4]` (63, 82, 101, 120), drawn with
+  0x00191780. Up and Down move `$s4` on the held buttons (with a repeat)
+  between 0 and `$sp+0x740` - 1 (4); Cross or START (pressed & 0x840)
+  chooses.
+- The pad words: 0x0031C1E8 held, 0x0031C1EC pressed (Up 0x1000, Down
+  0x4000, Cross 0x40, Start 0x800).
+- The menu text file (MENU/TEXT_BIN.BIN, at 0x0031BDAC) holds every language:
+  per-language blocks (0x0031BDA0 the language), each 14 sections of offset
+  tables and strings.
+
+PC SETTINGS and EXIT GAME (port/main_menu.cpp): two rows under FILE, the
+game's cursor never past FILE. The port's own cursor takes over below it. At
+the menu's yield the two rows are drawn as the game draws its own (FILE's
+frame copied 19 and 38 lines lower, the text in the game's font), and the
+highlight is moved to the port's row. When the menu resumes, the port takes
+the cursor's Up, Down, Cross and START before the game sees them. The PLAYTIME
+line is drawn 4 lines lower on the main menu, clear of the sixth row. Their
+strings and frames sit in an unused language's block of the text file. PC
+SETTINGS opens the engine's PC settings panel; EXIT GAME ends the run as
+closing the window does. Recorded as the `menu` run.
