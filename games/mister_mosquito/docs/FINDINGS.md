@@ -158,3 +158,27 @@ polls getinfo now and then; without one it polls getinfo every frame.
   sequencer F_001BEC18 (at 0x001BECA8) and never sends its queue - 23
   commands pending at 0x00666E80, request number 8. Next: why that loop
   never ends (the sequence data it walks, 0x001C0318's events).
+
+## The stage-entry stall, as far as it is understood (2026-10-11 06:30)
+
+The EE runs a sequencer of its own (F_001BEC18, the sound thread, each
+frame): 48 tracks of 0x54 bytes at 0x00665E40 (+0 flags, low nibble the
+state: 3 and 0xC play; +4 offset, +8 data, +0x10 tempo step, +0x14 time
+to the next event, +0x18 the bank), banks described at 0x006647C0 (12
+bytes each: the bank's .HD - "SShd", relocated in place - its size, ...).
+An event with no delay is taken at once; a track whose data are zeros never
+ends a frame.
+
+What happened in the stalled runs: at the stage select (sound frame ~741)
+SYSTEM01.HD (bank 1) was read to 0x00BCF800 and track 0 started on it
+(data 0x00BCF9AE, state 0xC - looping); entering stage 1 (~1050) the game
+read SYSTEM01.HD again, to 0x00BD0400, with track 0 still playing - its
+old data had meanwhile been reused and were zeros. The sequencer then
+never finishes its frame, the queued commands (23, among them the stage's
+bank upload) are never sent, and the stage loader waits forever in
+0x001C2690. In other runs the same moment passed (the track had been
+stopped first). On the console the game must stop that track before the
+bank moves; what decides whether it does here - thread interleaving around
+the stage loader, CD reads finishing at once instead of taking time, or a
+translation fault - is the next thing to find (watch track 0's flags with
+--watch-write 0x00665E40 across the stage select -> stage transition).
