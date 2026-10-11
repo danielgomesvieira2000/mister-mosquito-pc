@@ -385,3 +385,21 @@ middle rows, the others' frames set up off the screen (0x00192EE0 from
 0x001788C0 gets x 1000), the question on the help line, NO chosen at first.
 YES ends the run as closing the window does. Recorded as the `menu` and
 `pc_menu` runs.
+
+## A wider picture (2026-10-11 night)
+
+The 3D's projection is 0x001B9640, a view-screen matrix as libvu0's
+sceVu0ViewScreenMatrix makes it: f12 the screen distance (320 / tan(fov/2),
+from 0x001B9A40), f13 the x aspect 1.0, f14 the y aspect 0.47, f15 and f16
+the centre 2048. Its callers are the cameras at 0x001B9ACC and 0x001B9D80.
+With the x aspect divided by (picture aspect / (4/3)) the 3D is wider, not
+stretched (port/widescreen.cpp). At 16:9 the title's fly-through shows more of
+the street at the sides.
+
+The 2D reaches the GS by another way than the 3D: 3D meshes on PATH1 (VU1's
+XGKICK), every 2D sprite (text glyphs on texture 0x1A40, the menu's frames,
+boxes, the HUD) on PATH2 (VIF1 DIRECT), built by several EE functions (text
+0x0013CC40, frames 0x00192EE0, boxes 0x001918F0, packets queued with
+0x001BD610). In a wider picture the 2D is still drawn for 4:3 and stretched
+with it: next to keep its shape, anchored left, centre or right as in
+Burnout 3 (its HUD editor, F10).

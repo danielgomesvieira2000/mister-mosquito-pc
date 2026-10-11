@@ -26,4 +26,5 @@ ps2_add_port(mister_mosquito
     SOURCES ${CMAKE_CURRENT_LIST_DIR}/overrides.cpp
             ${CMAKE_CURRENT_LIST_DIR}/tasks.cpp
             ${CMAKE_CURRENT_LIST_DIR}/sound_trace.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/main_menu.cpp)
+            ${CMAKE_CURRENT_LIST_DIR}/main_menu.cpp
+            ${CMAKE_CURRENT_LIST_DIR}/widescreen.cpp)
