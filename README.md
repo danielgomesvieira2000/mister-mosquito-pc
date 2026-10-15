@@ -16,8 +16,8 @@ the toolchain and runtime also behind the
 Early: there is **no release yet**. It boots, plays the title, the menus and
 the first stage with sound, on the Vulkan renderer at up to 4x the PS2's
 resolution, widescreen with the HUD kept in place (F10 edits it), PC SETTINGS
-and EXIT GAME in the game's main menu, and the engine's PC settings panel
-(F1). What the game taught the port, and the open problems, are in
+and EXIT GAME in the game's main menu, the engine's PC settings panel
+(F9) and an FPS counter (F1). What the game taught the port, and the open problems, are in
 [games/mister_mosquito/docs/FINDINGS.md](games/mister_mosquito/docs/FINDINGS.md).
 
 ## AI usage
