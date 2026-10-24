@@ -23,6 +23,7 @@ and say here what each reaches and at which frames:
 | `menu.args` | no card: the main menu with the port's rows - the cursor on PC SETTINGS (frame 10,800), then EXIT GAME (11,000), the help line following | 11,000 |
 | `pc_menu.args` | no card: PC SETTINGS opened from the main menu - its six rows, the cursor on ASPECT (frame 11,000) - then back, and EXIT GAME's question, NO chosen (11,200) | 11,200 |
 | `wide.args` | `stage1.args` in a 16:9 picture (`--setting aspect=16:9`): the 3D wider, the menus' and the stage's 2D kept in shape, the stage's HUD at the corners | 19,500 |
+| `keys_w.args`, `keys_ref.args` | `menu.args`, the PC settings panel (F9, `--window`) opened at 10,000: its Keyboard page, DPAD UP to be bound - W pressed (keys_w) or Esc (keys_ref) - then the cursor moved up by W (keys_w) or the controller's Up (keys_ref): the engine's keyboard bindings; the two draw the same | 11,000 |
 
 `python engine/tools/regress_all.py` runs every one of them (and every other
 game's, given their repositories) - before an engine version is tagged.

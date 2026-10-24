@@ -1,0 +1,1 @@
+--virtual-time --press cross@500-510 --press start@2800-2806 --press down@10560-10565 --press down@10620-10625 --press down@10680-10685 --press down@10740-10745 --window --key 0x78@10000 --key up@10030 --key up@10060 --key enter@10090 --key enter@10120 --key w@10150 --key 0x78@10200 --key w@10900-10905 --until-frame 11000
