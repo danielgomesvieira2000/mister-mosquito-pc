@@ -427,3 +427,43 @@ hearts top left, the stress orb and radar bottom left, the blood count bottom
 right - anchored there by default. The markers on the room's targets
 (0x00145C70, 0x00146A00) sit on the 3D, which the camera already made wider:
 stretched, not moved.
+
+## High frame rates: a first look (2026-10-31)
+
+The game steps 60 times a second, a step a picture: consecutive pictures of
+stage 1's intro and play all differ (`frame_motion.py steps`), with no "x 0"
+pairs. Its main loop (0x00168D60) runs, each frame: the display's GIF packet
+(0x00101B10, 23 quadwords), the last step's display list to VIF1 as one
+chain (0x001352D0, before anything else of the frame), the camera
+(0x001B9B90), the task scheduler (0x0011AB9C: the tasks update the game and
+write the next list), the screen effects (0x00136350, 0x00135F00,
+0x00135B60), then sceGsSyncV (0x00100B40) and the field flipped
+(`$gp-0x7BD4`). The drawing is written while the game updates, so a picture
+between two steps would be the two steps' lists blended
+(ps2host/display_list.h), as in Resident Evil Outbreak's port.
+
+`port/high_fps.cpp` is a probe so far: MM_BLEND_PROBE=1 plans each step's
+blend from the one before and logs it; MM_BLEND_DUMP=<frame> writes that
+frame's list and the next one's; MM_BLEND_CUT_SHARE / MM_BLEND_JUMP set the
+blend's options. In stage 1 (frames 18,590-18,800):
+
+- A list is ~400,000 words (~70,000 VIF codes), the same codes to their end
+  from one step to the next. ~7,000 UNPACKs: to VU address 3 (V4-32, FLG),
+  5 and 8 (V3-32, FLG) - the batches' own data - and to 0 (V4-32, no FLG,
+  436), 0x1A and 0x1E (218 each).
+- What differs between two steps (18,650 / 18,651): 218 UNPACKs of V4-32 to
+  address 0 (6,540 words - the things' matrices), 102 of V4-32 to 5 with FLG
+  (2,670 words: FLG data the blender never blends - to be found out what it
+  is), 594 DIRECT GIF packets (1,627 words: the 2D, in GS fixed point, and
+  screen-space positions - not floats).
+- With the engine's default options every step is a camera cut (cut_share
+  0.2: ~49 of ~220 segments "moved" and ~50 unmatched each step), nothing
+  blended. With the share rule off ~3,000 words blend a step; at a still
+  moment none.
+
+Next: why ~50 segments find no match from one step to the next (the field
+flip's double-buffered packets?); what the FLG data to address 5 holds; the
+camera's own segment (`cut_segment`, its view's rows) instead of the share
+rule; then where the pictures between steps are drawn - the display shows a
+field a picture (640 x 224, XYOFFSET y by field), so a picture between steps
+must be drawn for the field the display shows then.

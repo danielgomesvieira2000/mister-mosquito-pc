@@ -19,12 +19,14 @@ void RegisterTaskOverrides();    // tasks.cpp
 void RegisterSoundTrace();       // sound_trace.cpp
 void RegisterMainMenu();         // main_menu.cpp
 void RegisterWidescreen();       // widescreen.cpp
+void RegisterHighFps();          // high_fps.cpp
 
 void RegisterGameOverrides() {
     RegisterTaskOverrides();
     RegisterSoundTrace();
     RegisterMainMenu();
     RegisterWidescreen();
+    RegisterHighFps();
     // sceGsSyncV's poll of INTC_STAT for the vertical blank (0x00103160), the
     // main loop's once a frame: waited for asleep, not spun.
     ps2host::AddIdleLoop(0x00103170u);
