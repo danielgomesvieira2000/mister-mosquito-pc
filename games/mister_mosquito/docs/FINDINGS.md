@@ -470,8 +470,15 @@ same stretch: ~29,000-30,000 codes a list, the same to their end step to step
 6,540 words blended each moving step (none at a still moment) - with the
 engine's default options.
 
-Next: what the FLG data to address 5 holds (2,670 words changing a step,
-never blended); the camera's segment for its cuts (`cut_segment`); the DIRECT
+The FLG data to address 5 that changes (102 UNPACKs of V4-32, 70-78
+vectors each, 2,670 words a step) is vertices: a position (x, y, z, 1) and a
+unit normal in turn, only y moving (0.1-0.6 a step) on a mesh ~440 x 830
+units across - a body the EE deforms each step (Rena breathing, likely). The
+blender never blends FLG data, so between steps that mesh would keep the
+newer step's shape (its deformation at 60, the rest smooth).
+
+Next: blending those vertices (an option for FLG data whose segment matched
+in place); the camera's segment for its cuts (`cut_segment`); the DIRECT
 2D (GS fixed point: stays as the newer step's - the HUD would step at 60);
 then the pictures between steps - the display shows a field a picture
 (640 x 224, XYOFFSET y by field), so one between steps must be drawn for the
