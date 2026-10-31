@@ -72,9 +72,12 @@ void Send(lifted::Context& c) {
 
 void RegisterHighFps() {
     if (!std::getenv("MM_BLEND_PROBE")) return;
-    // (the probe's options: MM_BLEND_CUT_SHARE, MM_BLEND_JUMP)
+    // (the probe's options: MM_BLEND_CUT_SHARE, MM_BLEND_JUMP, MM_BLEND_FLG)
     if (const char* v = std::getenv("MM_BLEND_CUT_SHARE")) g_options.cut_share = float(std::atof(v));
     if (const char* v = std::getenv("MM_BLEND_JUMP")) g_options.jump = float(std::atof(v));
+    // The bodies the EE deforms each step (their vertices in the double
+    // buffer's data, FLG): blended with the rest (MM_BLEND_FLG=0: not).
+    g_options.blend_flg = !(std::getenv("MM_BLEND_FLG") && std::getenv("MM_BLEND_FLG")[0] == '0');
     ps2host::SetVif1ChainFilter(Lists);
     ps2host::Override(0x001352D0u, Send, "the frame's display list sent: kept for the blend probe");
 }

@@ -477,8 +477,13 @@ units across - a body the EE deforms each step (Rena breathing, likely). The
 blender never blends FLG data, so between steps that mesh would keep the
 newer step's shape (its deformation at 60, the rest smooth).
 
-Next: blending those vertices (an option for FLG data whose segment matched
-in place); the camera's segment for its cuts (`cut_segment`); the DIRECT
+With the engine's `blend_flg` (ListBlendOptions, off by default; on in the
+probe, MM_BLEND_FLG=0 off) they blend with the rest: ~9,200 words a moving
+step (matrices and the body), ~2,700 at a still moment (the body breathing
+on), the largest move ~0.2 of a jump's, no cuts, 5 steps of 210 with a
+segment left stepping.
+
+Next: the camera's segment for its cuts (`cut_segment`); the DIRECT
 2D (GS fixed point: stays as the newer step's - the HUD would step at 60);
 then the pictures between steps - the display shows a field a picture
 (640 x 224, XYOFFSET y by field), so one between steps must be drawn for the
