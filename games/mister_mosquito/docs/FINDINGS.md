@@ -461,9 +461,19 @@ blend's options. In stage 1 (frames 18,590-18,800):
   blended. With the share rule off ~3,000 words blend a step; at a still
   moment none.
 
-Next: why ~50 segments find no match from one step to the next (the field
-flip's double-buffered packets?); what the FLG data to address 5 holds; the
-camera's own segment (`cut_segment`, its view's rows) instead of the share
-rule; then where the pictures between steps are drawn - the display shows a
-field a picture (640 x 224, XYOFFSET y by field), so a picture between steps
-must be drawn for the field the display shows then.
+The ~50 unmatched segments and the cuts were the engine's: its list reader
+walked an UNPACK as `num` vectors, but this game writes with STCYCL filling
+(WL > CL: CL vectors read of each WL written), so the reader lost its place
+in the data and read codes from it. Read as STCYCL says (engine 93fcc32), the
+same stretch: ~29,000-30,000 codes a list, the same to their end step to step
+(199 of 210), 437 segments, all matched in place, no cuts, the matrices'
+6,540 words blended each moving step (none at a still moment) - with the
+engine's default options.
+
+Next: what the FLG data to address 5 holds (2,670 words changing a step,
+never blended); the camera's segment for its cuts (`cut_segment`); the DIRECT
+2D (GS fixed point: stays as the newer step's - the HUD would step at 60);
+then the pictures between steps - the display shows a field a picture
+(640 x 224, XYOFFSET y by field), so one between steps must be drawn for the
+field shown then; and the hooks (sceGsSyncV 0x00100B40: the game's frame
+every other blank at 120, the blended list sent between).
